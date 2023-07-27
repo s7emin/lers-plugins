@@ -19,7 +19,7 @@ using System.Web;
 namespace ArshinSearch
 {
 
-	
+
 
 	/// <summary>
 	/// Класс экранной формы
@@ -76,14 +76,14 @@ namespace ArshinSearch
 			*/
 		}
 
-        private void MainView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
+		private void MainView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
 			if (e.ColumnIndex == 10) Process.Start("https://fgis.gost.ru/fundmetrology/cm/results/" + MainView.SelectedCells[0].Value.ToString());
 
 		}
 
-        private async void button1_Click(object sender, EventArgs e)
-        {
+		private async void button1_Click(object sender, EventArgs e)
+		{
 			if (MainView.RowCount > 0)
 			{
 				int i = 0;
@@ -101,19 +101,19 @@ namespace ArshinSearch
 
 				}
 			}
-			
-			
+
+
 
 
 		}
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private async void button2_Click(object sender, EventArgs e)
-        {
+		private async void button2_Click(object sender, EventArgs e)
+		{
 			button2.Enabled = false;
 			MainView.Rows.Clear();
 			textBox2.Text = "";
@@ -125,8 +125,9 @@ namespace ArshinSearch
 			if (!String.IsNullOrEmpty(textBox1.Text)) requestend = extendrequestnum + requestend;
 			if (!String.IsNullOrEmpty(comboBox1.Text)) requestend = extendrequestorg + requestend;
 			if (!String.IsNullOrEmpty(comboBox2.Text)) requestend = extendrequesttype + requestend;
-			
-			try {
+
+			try
+			{
 				string responseBody = await client.GetStringAsync(baserequest + requestend);
 				var jsonResponse = JObject.Parse(responseBody);
 				docsArray = (JArray)jsonResponse["response"]["docs"];
@@ -142,21 +143,22 @@ namespace ArshinSearch
 					string miDate = (string)doc.SelectToken("$.['verification_date']");
 					bool applicability = (bool)doc.SelectToken("$.['applicability']");
 					string validDate = "-";
-					if (applicability) 
-					{ 
+					if (applicability)
+					{
 						validDate = (string)doc.SelectToken("$.['valid_date']");
 						validDate = validDate.Substring(0, 10);
-					}		
-					string vri_id = (string)doc.SelectToken("$.['vri_id']");			
+					}
+					string vri_id = (string)doc.SelectToken("$.['vri_id']");
 					string miDocnum = (string)doc.SelectToken("$.['result_docnum']");
 					//MainView.Rows.Add(miModification, miNumber, org_title, miDate.Substring(0, 10), applicability, vri_id, "-");
-					MainView.Rows.Add(org_title, miMitnumber, miMititle, miMitype, miModification, miNumber, miDate.Substring(0, 10), validDate, applicability,miDocnum, vri_id, "-" );
+					MainView.Rows.Add(org_title, miMitnumber, miMititle, miMitype, miModification, miNumber, miDate.Substring(0, 10), validDate, applicability, miDocnum, vri_id, "-");
 					// Добавляем запись в таболицу MainView
 				}
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				MessageBox.Show(ex.Message);
-					}
+			}
 			button2.Enabled = true;
 			if (MainView.RowCount > 0) button1.Enabled = true;
 
@@ -165,19 +167,22 @@ namespace ArshinSearch
 
 		}
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
+		private void textBox1_TextChanged(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+		{
 
-        }
+		}
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
+		private void textBox2_TextChanged(object sender, EventArgs e)
+		{
 
-        }
-    }
+		}
+
+		
+
+	}
 }
