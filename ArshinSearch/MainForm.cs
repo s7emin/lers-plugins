@@ -2,6 +2,7 @@
 using Lers.Plugins;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,7 +27,7 @@ namespace ArshinSearch
 	/// </summary>
 	public partial class MainForm : Form
 	{
-		HttpClient client = new HttpClient();
+		private HttpClient client;
 		const string baserequest = "https://fgis.gost.ru/fundmetrology/cm/xcdb/vri/select?";
 		JArray docsArray;
 		string startpos = "0";
@@ -38,6 +39,9 @@ namespace ArshinSearch
 		public MainForm()
 		{
 			InitializeComponent();
+			client = new HttpClient();
+			client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36");
+
 		}
 
 		/// <summary>
@@ -48,32 +52,6 @@ namespace ArshinSearch
 		{
 			// Сохраняем хост-интерфейса клиента себе в программу
 			this.host = host;
-			// Ставим авто-ширину столбцов в такой режим, что суммарная ширина всех столбцов 
-			// в точности заполняет отображаемую область MainView
-			//MainView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-			/*
-			// Получам список точек учёта от сервера
-			MeasurePoint[] measurePointList = host.Server.MeasurePoints.GetList();
-
-			// Если список точек учёта не пуст
-			if (measurePointList != null)
-			{
-				// Проходим по всему списку
-				foreach (MeasurePoint measurePoint in measurePointList)
-				{					
-					// Добавляем запись в таболицу MainView
-					MainView.Rows.Add(measurePoint.FullTitle, EnumUtils.GetDescription(measurePoint.SystemType));
-				}
-
-				
-				
-			}
-
-			else
-				// Если список точек учёта пуст, выводим сообщение
-				MessageBox.Show("Список точек учёта пуст",
-					"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			*/
 		}
 
 		private void MainView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -141,12 +119,20 @@ namespace ArshinSearch
 					string miNumber = (string)doc.SelectToken("$.['mi.number']");
 					string org_title = (string)doc.SelectToken("$.['org_title']");
 					string miDate = (string)doc.SelectToken("$.['verification_date']");
+					if (DateTime.TryParseExact(miDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+					{
+						miDate = parsedDate.ToString("dd.MM.yyyy");
+					}
 					bool applicability = (bool)doc.SelectToken("$.['applicability']");
 					string validDate = "-";
 					if (applicability)
 					{
 						validDate = (string)doc.SelectToken("$.['valid_date']");
 						validDate = validDate.Substring(0, 10);
+						if (DateTime.TryParseExact(validDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate2))
+						{
+							validDate = parsedDate2.ToString("dd.MM.yyyy");
+						}
 					}
 					string vri_id = (string)doc.SelectToken("$.['vri_id']");
 					string miDocnum = (string)doc.SelectToken("$.['result_docnum']");
