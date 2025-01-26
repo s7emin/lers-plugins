@@ -39,17 +39,38 @@ namespace SimpleWebConfig
 
 			// Запрашиваем требуемую для работы информацию
 			measurePoint.Refresh(MeasurePointInfoFlags.Equipment);
-			
+
 			// Проверим, что у точки учёта есть IP подключение
-			if (measurePoint.Device.PollSettings.Connections[0].CommLinkType != Lers.Poll.CommunicationLink.Ip)
+			bool connectionFound = false;
+
+			foreach (var connection in measurePoint.Device.PollSettings.Connections)
 			{
-				MessageBox.Show("У выбранной точки учёта не задано подключение с типом интернет",
-					"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
+				if (connection.CommLinkType == Lers.Poll.CommunicationLink.Ip)
+				{
+					try
+					{
+						Process.Start("http://admin:admin@" + connection.InternetHost);
+						connectionFound = true;
+						break; // Выходим из цикла, так как нужное подключение найдено
+					}
+					catch
+					{
+						MessageBox.Show("Не удалось открыть web интерфейс");
+					}
+				}
 			}
 
-			try { Process.Start("http://admin:admin@" + measurePoint.Device.PollSettings.Connections[0].InternetHost); }
-			catch { MessageBox.Show("Не удалось открыть web интерфейс"); }
+			if (!connectionFound)
+			{
+				MessageBox.Show(
+					"У выбранной точки учёта не задано подключение с типом интернет",
+					"Ошибка",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Warning
+				);
+			}
+
+
 		}
 
 
