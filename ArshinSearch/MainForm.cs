@@ -119,9 +119,10 @@ namespace ArshinSearch
 					string miNumber = (string)doc.SelectToken("$.['mi.number']");
 					string org_title = (string)doc.SelectToken("$.['org_title']");
 					string miDate = (string)doc.SelectToken("$.['verification_date']");
+					miDate = miDate.Substring(0, 10);
 					if (DateTime.TryParseExact(miDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
 					{
-						miDate = parsedDate.ToString("dd.MM.yyyy");
+						miDate = parsedDate.ToString("dd.MM.yy");
 					}
 					bool applicability = (bool)doc.SelectToken("$.['applicability']");
 					string validDate = "-";
@@ -131,13 +132,13 @@ namespace ArshinSearch
 						validDate = validDate.Substring(0, 10);
 						if (DateTime.TryParseExact(validDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate2))
 						{
-							validDate = parsedDate2.ToString("dd.MM.yyyy");
+							validDate = parsedDate2.ToString("dd.MM.yy");
 						}
 					}
 					string vri_id = (string)doc.SelectToken("$.['vri_id']");
 					string miDocnum = (string)doc.SelectToken("$.['result_docnum']");
 					//MainView.Rows.Add(miModification, miNumber, org_title, miDate.Substring(0, 10), applicability, vri_id, "-");
-					MainView.Rows.Add(org_title, miMitnumber, miMititle, miMitype, miModification, miNumber, miDate.Substring(0, 10), validDate, applicability, miDocnum, vri_id, "-");
+					MainView.Rows.Add(org_title, miMitnumber, miMititle, miMitype, miModification, miNumber, miDate, validDate, applicability, miDocnum, vri_id, "-");
 					// Добавляем запись в таболицу MainView
 				}
 			}
