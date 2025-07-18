@@ -22,5 +22,26 @@ namespace ArshinSearch.Properties {
                 return defaultInstance;
             }
         }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ComboBox1History {
+            get { return ((string)(this["ComboBox1History"])); }
+            set { this["ComboBox1History"] = value; }
+        }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ComboBox2History {
+            get { return ((string)(this["ComboBox2History"])); }
+            set { this["ComboBox2History"] = value; }
+        }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ComboBox3History {
+            get { return ((string)(this["ComboBox3History"])); }
+            set { this["ComboBox3History"] = value; }
+        }
     }
 }
