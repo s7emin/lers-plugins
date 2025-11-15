@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.59.0")]
-[assembly: AssemblyFileVersion("3.59.0")]
+[assembly: AssemblyVersion("3.63.0")]
+[assembly: AssemblyFileVersion("3.63.0")]
 [assembly: AssemblyPlugin("0a1b6f36-629f-4dc6-8101-ec6ae9a1722d")]
 [assembly: AssemblyPluginWebsite("https://github.com/s7emin")]
 [assembly: AssemblyPluginEmail("s@cemin.ru")]
